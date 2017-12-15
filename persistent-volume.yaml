@@ -1,14 +1,11 @@
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
   name: consul-pv-volume
-  labels:
-    type: local
 spec:
-  storageClassName: manual
-  capacity:
-    storage: 10Gi
   accessModes:
     - ReadWriteOnce
+  capacity:
+    storage: 2Gi
   hostPath:
     path: "/data"
