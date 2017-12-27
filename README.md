@@ -11,7 +11,7 @@ This is gluu server for kubernetis. This readme will deploy gluu server in minik
 - kubectl
 - git
 
-## Installaction guide
+## Installation guide
 
 ### Start minikube vm
 
@@ -29,29 +29,10 @@ $ git clone https://github.com/GluuFederation/k8s-gluu-server.git
 
 Then Change to k8s-gluu-server dir.
 
-### Create volume and volume claim
+### Run this command to setup consul in minikube single node cluster
 
 ```
-$ kubectl create -f persistent-volume.yaml
-$ kubectl create -f persistent-volume-claim.yaml
-```
-
-### Create consul deployment
-
-```
-$ kubectl create -f consul.yaml
-```
-
-### Create consul service
-
-```
-$ kubectl create -f consul-svc.yaml
-```
-
-### Expose consul
-
-```
-$  kubectl create -f consul-svc-np.yaml
+$ kubectl create -f stage1.yaml
 ```
 
 ### Get consul service port and minikube ip
@@ -66,7 +47,7 @@ this will show minikube ip, save it for later use.
 $ kubectl get svc
 ```
 
-example output:
+Example output:
 
 ```
 NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
@@ -75,18 +56,19 @@ gluuconsul-np   NodePort    10.103.246.9     <none>        8500:30769/TCP   1d
 
 ```
 
-for example, save this exposed consule service port "30769" for later use
+For example, save this exposed consule service port "30769" for later use
 
 ### Genarate configuration
 
-This cmd will genarate important configuration
+This cmd will genarate configuration and put it in consul.
+For this guide we will use "k8s-gluu-server" as gluu hostname.
 
 ```
 $ docker run --rm \
     gluufederation/config-init:3.1.1_dev \
     --admin-pw admin@1234 \
     --email support@gluu.local \
-    --domain k8s.gluu.local \
+    --domain k8s-gluu-server \
     --org-name gluuinc \
     --kv-host <minikube-ip> \
     --kv-port <exposed-consule-service-port> \
@@ -95,6 +77,7 @@ $ docker run --rm \
 
 ### Deploy ldap in another vm
 
+**Note: This ladp deployment is only an example.**
 Create a virtual machine using virtualbox. Get its ip. Then run this cmd inside new vm:
 
 ```
@@ -110,35 +93,27 @@ $ docker run -d \
     gluufederation/openldap:3.1.1_dev
 ```
 
-### Add external ldap server endpoint to kubernetis cluster
+### Generate stage2.yaml
 
-For example, Edit this line '- ip: "192.168.33.100"' in ext-openldap.yaml to set ldap virtual machines ip.
-Then run this command.
-
-```
-$ kubectl create -f ext-openldap.yaml
-```
-
-### Create oxauth deployemnt
+To run this commant we need ldap location and gluu server hostname.
+For example:
+ldap location : 192.168.xx.xxx:1389
+gluu hostname : k8s-gluu-server
 
 ```
-$ kubectl create -f oxauth.yaml
-$ kubectl create -f oxauth-svc.yaml
+$ python gluuk8s.py --ldap-location=192.168.xx.xxx:1389 --k8s-gluu-hostname=k8s-gluu-server > /path/of/stage2.yaml
 ```
 
-### Create oxtrust deployemnt
+This will create stage2.yaml file.
+
+### Run stage2
 
 ```
-$ kubectl create -f oxtrust.yaml
-$ kubectl create -f oxtrust-svc.yaml
+$ kubectl create -f /path/of/stage2.yaml
 ```
 
-### Create keyrotation deployemnt
+This will deploy oxauth, oxtrust and nginx services in minikube node.
 
-```
-$ kubectl create -f keyrotation.yaml
-```
-
-### Expose oxauth and oxtrust using nginx
+### Use deployed services
 
 TODO

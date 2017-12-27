@@ -22,7 +22,7 @@ def render_stage2(ctx):
               help="Location for ldap server, Ex: <ip_or_name>:<port>",
               show_default=True)
 @click.option("--k8s-gluu-hostname",
-              default="k8s-gluu-hostname",
+              default="k8s-gluu-server",
               help="Hostname for Gluu Server.",
               show_default=True)
 def main(ldap_location, k8s_gluu_hostname):
