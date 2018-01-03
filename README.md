@@ -10,7 +10,7 @@ Gluu Server on Kubernetes. This readme will deploy gluu server in minikube, a si
 - or [KVM2](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#kvm2-driver)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl)
 - [minikube](https://github.com/kubernetes/minikube)
-- docker ('apt install docker.io' or 'yum install docker.io')
+- [docker](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu)
 - git ('apt install git' or 'yum install git')
 
 ## Installation guide
@@ -106,8 +106,10 @@ To run this command we need the ip of our LDAP vm for `ldap-location` and the `d
 For example:
 ldap location : 192.168.xx.xxx:1389
 gluu hostname : k8s-gluu-server
+You need 'click' to run this script.
 
 ```
+$ pip install click
 $ python gluuk8s.py --ldap-location=192.168.xx.xxx:1389 --k8s-gluu-hostname=k8s-gluu-server > /path/of/stage2.yaml
 ```
 
