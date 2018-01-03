@@ -21,6 +21,12 @@ Gluu Server on Kubernetes. This readme will deploy gluu server in minikube, a si
 $ minikube start
 ```
 
+or if you're using KVM2
+
+```
+minikube start --vm-driver kvm2
+```
+
 This command will start a single kubernetes node.
 
 ### Clone gluu kubernetes project
