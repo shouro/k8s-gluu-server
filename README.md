@@ -10,6 +10,7 @@ This is gluu server for kubernetis. This readme will deploy gluu server in minik
 - minikube
 - kubectl
 - git
+- docker
 
 ## Installation guide
 
