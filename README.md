@@ -2,14 +2,16 @@
 
 ## Overview
 
-This is gluu server for kubernetis. This readme will deploy gluu server in minikube, a single node cluter as a basic example.
+Gluu Server on Kubernetes. This readme will deploy gluu server in minikube, a single node cluter as a basic example.
 
 ## Tools needed:
 
-- virtualbox
-- minikube
-- kubectl
-- git
+- [virtualbox](https://www.virtualbox.org/wiki/Downloads)
+- or [KVM2](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#kvm2-driver)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-binary-via-curl)
+- [minikube](https://github.com/kubernetes/minikube)
+- docker ('apt install docker.io' or 'yum install docker.io')
+- git ('apt install git' or 'yum install git')
 
 ## Installation guide
 
@@ -19,7 +21,7 @@ This is gluu server for kubernetis. This readme will deploy gluu server in minik
 $ minikube start
 ```
 
-This command will start a single kubernetis node.
+This command will start a single kubernetes node.
 
 ### Clone gluu kubernetes project
 
@@ -28,6 +30,10 @@ $ git clone https://github.com/GluuFederation/k8s-gluu-server.git
 ```
 
 Then Change to k8s-gluu-server dir.
+
+```
+$ cd k8s-gluu-server/
+```
 
 ### Run this command to setup consul in minikube single node cluster
 
@@ -95,7 +101,8 @@ $ docker run -d \
 
 ### Generate stage2.yaml
 
-To run this commant we need ldap location and gluu server hostname.
+To run this command we need the ip of our LDAP vm for `ldap-location` and the `domain`, defined above, as `gluu hostname`.
+
 For example:
 ldap location : 192.168.xx.xxx:1389
 gluu hostname : k8s-gluu-server
